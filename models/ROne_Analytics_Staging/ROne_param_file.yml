@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: ROne_Ana
+    schema: ro_data
+    tables:
+      - name: t_cigna_o500_med_trig_raw
+      - name: t_cigna_o500_med_trig
+      

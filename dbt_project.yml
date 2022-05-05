@@ -34,5 +34,10 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   my_new_project:
     # Applies to all files under models/example/
-    example:
-      materialized: view
+    ROne_Analytics_Staging:
+      materialized: table
+      #+database: "{{ 'DBT' if target.name == 'dev' else 'PROD_DETAIL' }}"
+      #+schema: "{{ 'DBT_FARONOVICH' if target.name == 'dev' else 'BETS' }}"
+      +database: 'postgres'
+      +schema: 'ro_data'
+      +transient: false

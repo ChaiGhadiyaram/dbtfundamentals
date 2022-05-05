@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: ROne_Ana
+    schema: ro_data
+    tables:
+      - name: customers
+      - name: payment
+      - name: orders
+        loaded_at_field: crtd_dt
+        freshness:
+          warn_after: {count: 12, period: hour}
+          error_after: {count: 24, period: hour}
+        
