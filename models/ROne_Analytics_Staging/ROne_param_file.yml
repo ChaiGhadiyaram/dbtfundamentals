@@ -11,4 +11,5 @@ sources:
       - name: t_cigna_o500_elig_raw
       - name: t_cigna_u500_elig_raw
       - name: t_cigna_s3_monthly_drop_intg
+      - name: t_cigna_s3_monthly_drop_split_jsonb_dbt
       
