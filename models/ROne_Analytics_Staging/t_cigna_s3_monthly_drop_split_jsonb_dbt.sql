@@ -1,3 +1,4 @@
+--test
 select  patient_pathway_id, 
  		case when 
 		replace(replace(client_info,'{"eligibility":[',''),']}','')::json->'lastName' is not null
