@@ -41,3 +41,10 @@ models:
       +database: 'postgres'
       +schema: 'ro_data'
       +transient: false
+    ROne_Analytics_Staging_incremental_load:
+      materialized: incremental
+      #+database: "{{ 'DBT' if target.name == 'dev' else 'PROD_DETAIL' }}"
+      #+schema: "{{ 'DBT_FARONOVICH' if target.name == 'dev' else 'BETS' }}"
+      +database: 'postgres'
+      +schema: 'ro_data'
+      +transient: false
