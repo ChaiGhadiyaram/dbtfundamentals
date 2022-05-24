@@ -8,7 +8,7 @@ select stg.ami,stg.email_addr_txt,stg.pid,stg.dependent_code,
 	row_number() over(partition by stg.email_addr_txt order by ami) as rn
 from ro_data.t_cigna_elig_intg stg ,
 	(select distinct email_addr_txt from (select email_addr_txt, count(*)
-				from ro_data.t_cigna_elig_intg where file_name like '%o500%'
+				from ro_data.t_cigna_elig_intg --where file_name like '%o500%'
 				group by 1 having count(*) > 1) a) email 
 	
 	where email.email_addr_txt = stg.email_addr_txt-- and pid = '475480504959527' 
@@ -27,7 +27,7 @@ select stg.ami,stg.mobile_pn,stg.pid,stg.dependent_code
 	,row_number() over(partition by stg.mobile_pn order by ami) as rn
 from ro_data.t_cigna_elig_intg stg ,
 	(select distinct mobile_pn from (select mobile_pn, count(*)
-				from ro_data.t_cigna_elig_intg where file_name like '%o500%'
+				from ro_data.t_cigna_elig_intg --where file_name like '%o500%'
 				group by 1 having count(*) > 1) a) email 
 	
 	where email.mobile_pn = stg.mobile_pn-- and pid = '475480504959527' 
@@ -57,11 +57,11 @@ subscrbr_stat_cd, cust_brth_dt, cust_gendr_cd, cvrg_per_yr_mth_num,
 from (
 select dense_rank() over(partition by ami,dependent_code,email_addr_txt order by ami,
 subscrbr_stat_cd,cust_elgbty_cvrg_term_dt desc  ) as rn,*
-from ro_data.t_cigna_elig_intg where file_name like '%o500%'
+from ro_data.t_cigna_elig_intg --where file_name like '%o500%'
 union
 select dense_rank() over(partition by ami,dependent_code,mobile_pn order by ami,
 subscrbr_stat_cd,cust_elgbty_cvrg_term_dt desc  ) as rn,*
- from ro_data.t_cigna_elig_intg where file_name like '%o500%'
+ from ro_data.t_cigna_elig_intg --where file_name like '%o500%'
 ) as a where a.rn=1 
 
 {{ config( post_hook=" alter table ro_data.t_cigna_elig_stg add column med_claim_triggered varchar") }}
