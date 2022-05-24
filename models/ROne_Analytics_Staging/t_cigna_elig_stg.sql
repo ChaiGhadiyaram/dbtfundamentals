@@ -1,4 +1,38 @@
+{{ config(
+    pre_hook=
 
+"update ro_data.t_cigna_elig_intg tgt set email_addr_txt = null 
+from (
+select * from (
+select stg.*,row_number() over(partition by stg.email_addr_txt order by ami) as rn
+from ro_data.t_cigna_elig_intg stg ,
+	(select distinct email_addr_txt from (select email_addr_txt, count(*)
+				from ro_data.t_cigna_elig_intg 
+				group by 1 having count(*) > 1) a) email 
+	
+	where email.email_addr_txt = stg.email_addr_txt-- and pid = '475480504959527' 
+			) as b where rn > 1) src
+where tgt.ami = src.ami  and tgt.email_addr_txt = src.email_addr_txt
+and tgt.pid = src.pid and tgt.dependent_code = src.dependent_code"
+) }}
+
+{{ config(
+    pre_hook=
+
+"update ro_data.t_cigna_elig_intg tgt set mobile_pn = null 
+from (
+select * from (
+select stg.*,row_number() over(partition by stg.mobile_pn order by ami) as rn
+from ro_data.t_cigna_elig_intg stg ,
+	(select distinct mobile_pn from (select mobile_pn, count(*)
+				from ro_data.t_cigna_elig_intg 
+				group by 1 having count(*) > 1) a) email 
+	
+	where email.mobile_pn = stg.mobile_pn-- and pid = '475480504959527' 
+			) as b where rn > 1) src
+where tgt.ami = src.ami  and tgt.mobile_pn = src.mobile_pn
+and tgt.pid = src.pid and tgt.dependent_code = src.dependent_code"
+) }}
 
 select 
 ami, dependent_code, pid, indiv_entpr_id,  client_id ,
@@ -26,8 +60,12 @@ union
 select dense_rank() over(partition by substr(ami,1,9),mobile_pn order by ami,
 subscrbr_stat_cd,cust_elgbty_cvrg_term_dt desc  ) as rn,*
  from {{ ref('t_cigna_elig_intg') }} where mobile_pn is not null
--- union
--- select dense_rank() over(partition by substr(ami,1,9),cust_addr_ln_1 order by ami,
--- subscrbr_stat_cd,cust_elgbty_cvrg_term_dt desc  ) as rn,*
--- from ro_data.t_cigna_elig_intg where cust_addr_ln_1 is not null
-) as a where a.rn=1 ;
+) as a where a.rn=1 
+
+{{ config( post_hook=" alter table ro_data.t_cigna_elig_stg add column med_claim_triggered varchar") }}
+{{ config( post_hook=" alter table ro_data.t_cigna_elig_stg add column med_claim_trig_dt varchar") }}
+{{ config( post_hook=" alter table ro_data.t_cigna_elig_stg add column med_claim_trig_days varchar") }}
+{{ config( post_hook=" alter table ro_data.t_cigna_elig_stg add column email_opt_out varchar") }}
+{{ config( post_hook=" alter table ro_data.t_cigna_elig_stg add column phone_opt_out varchar") }}
+{{ config( post_hook=" alter table ro_data.t_cigna_elig_stg add column mailing_opt_out varchar") }}
+{{ config( post_hook=" alter table ro_data.t_cigna_elig_stg add column c;ient_opt_out varchar") }}
