@@ -70,4 +70,4 @@ subscrbr_stat_cd,cust_elgbty_cvrg_term_dt desc  ) as rn,*
 {{ config( post_hook=" alter table ro_data.t_cigna_elig_stg add column email_opt_out varchar") }}
 {{ config( post_hook=" alter table ro_data.t_cigna_elig_stg add column phone_opt_out varchar") }}
 {{ config( post_hook=" alter table ro_data.t_cigna_elig_stg add column mailing_opt_out varchar") }}
-{{ config( post_hook=" alter table ro_data.t_cigna_elig_stg add column c;ient_opt_out varchar") }}
+{{ config( post_hook=" alter table ro_data.t_cigna_elig_stg add column client_opt_out varchar") }}
