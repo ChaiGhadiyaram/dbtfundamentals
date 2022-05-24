@@ -64,7 +64,7 @@ select dense_rank() over(partition by substr(ami,1,9),mobile_pn order by ami,
 subscrbr_stat_cd,cust_elgbty_cvrg_term_dt desc  ) as rn,*
  from ro_data.t_cigna_elig_intg 
   where mobile_pn is not null
-) as a where a.rn=1 
+) as a where a.rn=1 limit 50000
 
 {{ config( post_hook=" alter table ro_data.t_cigna_elig_stg add column med_claim_triggered varchar") }}
 {{ config( post_hook=" alter table ro_data.t_cigna_elig_stg add column med_claim_trig_dt varchar") }}
