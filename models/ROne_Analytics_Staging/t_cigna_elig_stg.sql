@@ -4,7 +4,8 @@
 "update ro_data.t_cigna_elig_intg tgt set email_addr_txt = null 
 from (
 select * from (
-select stg.*,row_number() over(partition by stg.email_addr_txt order by ami) as rn
+select stg.ami,stg.email_addr_txt,stg.pid,stg.dependent_code,
+	row_number() over(partition by stg.email_addr_txt order by ami) as rn
 from ro_data.t_cigna_elig_intg stg ,
 	(select distinct email_addr_txt from (select email_addr_txt, count(*)
 				from ro_data.t_cigna_elig_intg 
@@ -22,7 +23,8 @@ and tgt.pid = src.pid and tgt.dependent_code = src.dependent_code"
 "update ro_data.t_cigna_elig_intg tgt set mobile_pn = null 
 from (
 select * from (
-select stg.*,row_number() over(partition by stg.mobile_pn order by ami) as rn
+select stg.ami,stg.mobile_pn,stg.pid,stg.dependent_code
+	,row_number() over(partition by stg.mobile_pn order by ami) as rn
 from ro_data.t_cigna_elig_intg stg ,
 	(select distinct mobile_pn from (select mobile_pn, count(*)
 				from ro_data.t_cigna_elig_intg 
