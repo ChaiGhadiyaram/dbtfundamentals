@@ -48,4 +48,4 @@ models:
       +database: 'postgres'
       +schema: 'ro_data'
       +transient: false
-        +post-hook: "grant select on {{ this }} to group RO_Read_Only_access"
+      +post-hook: "grant select on {{ this }} to group RO_Read_Only_access"
