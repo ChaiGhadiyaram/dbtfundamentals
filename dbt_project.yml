@@ -41,6 +41,8 @@ models:
       +database: 'postgres'
       +schema: 'ro_data'
       +transient: false
+      +post-hook: 'grant select on {{ this }} to group "RO_Read_Only_access"'
+      +post-hook: 'grant select on {{ this }} to group "RO_Read_Write_access"'
     ROne_Analytics_Staging_incremental_load:
       materialized: incremental
       #+database: "{{ 'DBT' if target.name == 'dev' else 'PROD_DETAIL' }}"
@@ -48,4 +50,5 @@ models:
       +database: 'postgres'
       +schema: 'ro_data'
       +transient: false
-      +post-hook: "grant select on {{ this }} to group RO_Read_Only_access"
+      +post-hook: 'grant select on {{ this }} to group "RO_Read_Only_access"'
+      +post-hook: 'grant select on {{ this }} to group "RO_Read_Write_access"'
