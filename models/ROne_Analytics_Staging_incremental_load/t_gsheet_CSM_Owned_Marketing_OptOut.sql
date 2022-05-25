@@ -1,5 +1,4 @@
 
-
 SELECT "Client Name (Official)" as Client_Name_Official, 
 "Client Name (DBA)" as Client_Name_DBA, 
 "Client ID Number" as Client_ID_Number, 
